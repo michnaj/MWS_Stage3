@@ -1,0 +1,45 @@
+@charset "utf-8"
+
+@media screen and (min-width: 576px)
+  /* ====================== Navigation ====================== */
+  #heading-nav
+    h1
+      .symbol
+        font-size: 22pt
+      a
+        font-size: 20pt
+        letter-spacing: 10px
+
+@media screen and (min-width: 768px)
+  /* ====================== Navigation ====================== */
+  #heading-nav
+    h1
+      .symbol
+        font-size: 28pt
+      a
+        font-size: 24pt
+        letter-spacing: 10px
+
+@media screen and (min-width: 1200px)
+  .breadcrumb-nav
+    width: 50%
+  #restaurant-container
+    margin: 0
+  .inside
+    #map-container
+      height: calc(100% - 80px)
+      position: fixed
+      right: 0
+      top: 80px
+      width: 50%
+      border-left: 1px solid #ddd
+      z-index: 1010
+    #footer
+      box-sizing: border-box
+      width: 50%
+
+  #restaurant-container, #reviews-container
+    padding: 80px 40px
+    width: 50%
+  #reviews-container
+    padding: 40px 40px 80px

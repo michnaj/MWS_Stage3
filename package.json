@@ -1,0 +1,32 @@
+{
+  "name": "mws-restaurant-s2",
+  "version": "1.0.0",
+  "description": "MWS-Restaurant Project - Stage 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "mws-test"
+  },
+  "keywords": [
+    "mws"
+  ],
+  "author": "Jarosław Michna",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.6.1",
+    "browser-sync": "^2.23.7",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^7.0.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "gulp-uglify-es": "^1.0.1",
+    "run-sequence": "^2.2.1"
+  },
+  "dependencies": {
+    "gulp-watch-sass": "^1.4.1",
+    "idb": "^2.1.1"
+  }
+}
