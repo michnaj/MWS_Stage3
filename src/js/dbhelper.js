@@ -49,7 +49,7 @@ class DBHelper {
     return dbPromise.then(function(db) {
       if (!db) return;
       let store = db.transaction('restaurants').objectStore('restaurants');
-      return store.getAll().then(restaurants => callback(null, restaurants) )
+      return store.getAll().then( restaurants => callback(null, restaurants) )
         .catch(err => callback(`Request failed. Returned ${err}`, null) );
     });
   }
