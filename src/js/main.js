@@ -138,6 +138,12 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
 
+  // TO DO - add checking favorite state
+  const favorite = document.createElement('div');
+  favorite.className = 'favorite';
+  favorite.innerHTML = '♥';
+  li.append(favorite);
+
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.setAttribute('alt', DBHelper.imageAltAttribute(restaurant));

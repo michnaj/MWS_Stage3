@@ -3,6 +3,19 @@ let restaurantId;
 let reviews;
 var map;
 
+// Review form elements
+const nameField = document.getElementById('name-input');
+const ratingField = document.getElementById('rating-select');
+const commentField = document.getElementById('comment-textarea');
+const nameMsg = document.getElementById('name-message');
+const ratingMsg = document.getElementById('rating-message');
+const commentMsg = document.getElementById('comment-message');
+const reviewForm = document.getElementById('review_form');
+const reviewSystemMsg = document.getElementById('review_form-system-messages');
+const reviewSaveButton = document.getElementById('review_form-save');
+const reviewClearButton = document.getElementById('review_form-clear');
+const favoriteButton = document.getElementById('restaurant-favorite');
+
 /**
  * Initialize Google map, called from HTML.
  */
@@ -113,13 +126,14 @@ fillReviewsHTML = (restaurantId = self.restaurant.id) => {
       console.log(error);
     } else {
       const container = document.getElementById('reviews-container');
-      if (!reviews.length) {
+      if (!reviews) {
         const noReviews = document.createElement('p');
         noReviews.innerHTML = 'No reviews yet!';
         container.appendChild(noReviews);
         return;
       } else {
         const ul = document.getElementById('reviews-list');
+        ul.innerHTML = '';
         reviews.forEach(review => {
           ul.appendChild(createReviewHTML(review));
         });
@@ -197,4 +211,198 @@ getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+/**
+ * Favorite handling
+ */
+
+favoriteButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  favoriteButton.classList.toggle('favorite');
+});
+
+/**
+ * Add new Review form handling
+ */
+
+// Set restaurant-id in add new review form
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.getElementById('restaurant-id-input').value = getParameterByName('id');
+});
+
+// Add new review button
+document.getElementById('review_form-add').addEventListener('click', (event) => {
+  event.preventDefault();
+  reviewForm.classList.toggle('open');
+});
+
+// Add new review form - system message Close button
+document.getElementById('review_msg-close-button').addEventListener('click', (event) => {
+  event.preventDefault();
+  reviewSystemMsg.style.display = 'none';
+  reviewSystemMsg.setAttribute('aria-live', 'off');
+});
+
+// Saving review
+reviewSaveButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  let review = {
+    restaurantId: document.getElementById('restaurant-id-input').value,
+    name: document.getElementById('name-input').value,
+    rating: document.getElementById('rating-select').value,
+    comment: document.getElementById('comment-textarea').value
+  }
+  let valid = validateReviewForm(review);
+  if (valid) saveReview(review);
+  else showMessage('invalid');
+});
+
+function saveReview(review) {
+  console.log(`Review saved: ${review}`);
+  showMessage('saved');
+  reviewForm.classList.remove('open');
+  return;
+}
+
+// Clear review form
+reviewClearButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  // name fields
+  nameField.value = '';
+  nameField.setAttribute('aria-invalid', '');
+  nameMsg.style.visibility = 'hidden';
+  nameMsg.setAttribute('aria-live', 'off');
+  //rating fields
+  ratingField.value = '';
+  ratingField.setAttribute('aria-invalid', '');
+  ratingMsg.style.visibility = 'hidden';
+  ratingMsg.setAttribute('aria-live', 'off');
+  // comment fields
+  commentField.value = '';
+  commentField.setAttribute('aria-invalid', '');
+  commentMsg.style.visibility = 'hidden';
+  commentMsg.setAttribute('aria-live', 'off');
+  // system messages
+  reviewSystemMsg.setAttribute('aria-live', 'off');
+  reviewSystemMsg.style.display = 'none';
+  document.getElementById('review_form-system-messages-text').innerHTML = '';
+});
+
+// Fields listeners for validation
+nameField.addEventListener('focusout', (event) => {
+  setFieldsAttribute(!checkValidText(nameField.value), 'name');
+});
+
+ratingField.addEventListener('focusout', (event) => {
+  setFieldsAttribute(!checkValidRating(ratingField.value), 'rating');
+});
+
+commentField.addEventListener('focusout', (event) => {
+  setFieldsAttribute(!checkValidText(commentField.value), 'comment');
+});
+
+// Fields validation
+// Text fields
+function checkValidText(value) {
+  const reg = /(<([^>]+)>)/gi;
+  if ((!value) || (value.trim().length == 0) || (value.match(reg))
+    || (value.match('&lt;')) || (value.match('&gt;'))
+    || (value.match('&amp;')) || (value.match('&quot;'))) return false;
+  else return true;
+}
+// Rating field
+function checkValidRating(value) {
+  if (!value) return false;
+  else return true;
+}
+
+// Set fields attribute (valid, invalid) in add new form
+function setFieldsAttribute(invalid, field) {
+  switch (field) {
+    case 'name':
+      nameField.setAttribute('aria-invalid', invalid);
+      if (invalid) {
+        nameMsg.setAttribute('aria-live', 'assertive');
+        nameMsg.style.visibility = 'visible';
+      } else {
+        nameMsg.setAttribute('aria-live', 'off');
+        nameMsg.style.visibility = 'hidden';
+      }
+      break;
+    case 'rating':
+      ratingField.setAttribute('aria-invalid', invalid);
+      if (invalid) {
+        ratingMsg.setAttribute('aria-live', 'assertive');
+        ratingMsg.style.visibility = 'visible';
+      } else {
+        ratingMsg.setAttribute('aria-live', 'off');
+        ratingMsg.style.visibility = 'hidden';
+      }
+      break;
+    case 'comment':
+      commentField.setAttribute('aria-invalid', invalid);
+      if (invalid) {
+        commentMsg.setAttribute('aria-live', 'assertive');
+        commentMsg.style.visibility = 'visible';
+      } else {
+        commentMsg.setAttribute('aria-live', 'off');
+        commentMsg.style.visibility = 'hidden';
+      }
+      break;
+    default:
+      return;
+  }
+  return;
+}
+
+function validateReviewForm(review) {
+  let validation = true;
+  // reting validation
+  if (!checkValidRating(review.rating)) {
+    setFieldsAttribute(true, 'rating');
+    validation = false;
+  } else {
+    setFieldsAttribute(false, 'rating');
+  }
+
+  // name validation
+  if (!checkValidText(review.name)) {
+    setFieldsAttribute(true, 'name');
+    validation = false;
+  } else {
+    setFieldsAttribute(false, 'name');
+  }
+
+  // comment validation
+  if (!checkValidText(review.comment)) {
+    setFieldsAttribute(true, 'comment');
+    validation = false;
+  } else {
+    setFieldsAttribute(false, 'comment');
+  }
+
+  return validation;
+}
+
+// Showing system-messages in add new review form
+function showMessage(type) {
+  let textField = document.getElementById('review_form-system-messages-text');
+  reviewSystemMsg.classList.remove('error', 'info', 'success', 'warning');
+  switch (type) {
+    case 'invalid':
+      textField.innerHTML="Incorrect data in the form. Check data and try again.";
+      reviewSystemMsg.classList.add('error');
+      break;
+    case 'saved':
+      textField.innerHTML="Review saved. Thank you for your opinion.";
+      reviewSystemMsg.classList.add('success');
+      break;
+    default:
+      textField.innerHTML="Something went wrong! Try again, please.";
+      reviewSystemMsg.classList.add('info');
+  }
+  reviewSystemMsg.setAttribute('aria-live', 'assertive');
+  reviewSystemMsg.style.display = 'block';
+  return;
 }

@@ -57,18 +57,14 @@ gulp.task('icocompress', () =>
 gulp.task('dist', gulp.series('sass', 'scripts', 'compress', 'swcompress', 'imgcompress', 'icocompress'));
 
 function defaultTask() {
-  // place code for your default task here
   browserSync.init({
     port: 8000,
     server: './'
   });
-  gulp.watch('css/**/*.css').on('change', reload);
-  gulp.watch('js/**/*.js').on('change', reload);
+  gulp.watch('src/js/**/dbhelper.js', gulp.series('scripts', 'compress')).on('change', reload);
+  gulp.watch('src/js/**/main.js', gulp.series('scripts', 'compress')).on('change', reload);
+  gulp.watch('src/js/**/restaurant_info.js', gulp.series('scripts', 'compress')).on('change', reload);
+  gulp.watch('src/js/**/sw.js', gulp.series('swcompress')).on('change', reload);
+  gulp.watch('src/sass/**/*.sass', gulp.series('sass')).on('change', reload);
   gulp.watch('*.html').on('change', reload);
-  gulp.watch('*.js').on('change', reload);
-  gulp.watch('src/js/**/dbhelper.js', gulp.series('scripts', 'compress'));
-  gulp.watch('src/js/**/main.js', gulp.series('scripts', 'compress'));
-  gulp.watch('src/js/**/restaurant_info.js', gulp.series('scripts', 'compress'));
-  gulp.watch('src/js/**/sw.js', gulp.series('swcompress'));
-  gulp.watch('src/sass/**/*.sass', gulp.series('sass'));
 }

@@ -43,7 +43,7 @@
     <section id="restaurant-container">
       <!-- ♡ -->
       <div id="fav-icon">
-        <a href="#">♥<span class="screenreader-only">Set as favorite</span></a>
+        <a id="restaurant-favorite" href="#">♥<span id="favorite-text" class="screenreader-only">Set as favorite</span></a>
       </div>
       <h2 id="restaurant-name"></h2>
       <picture id="restaurant-img"></picture>
@@ -55,8 +55,41 @@
     <!-- Beginning reviews -->
     <section id="reviews-container">
       <h3>Reviews</h3>
-      <div id="form__review">
-        Place for form.
+      <div id="form">
+        <a id="review_form-add" href="#">Add a new review</a>
+        <div id="review_form-system-messages" role="alert" aria-live="off" class=""><a id="review_msg-close-button" href="#" title="Close message">🗙<span class="screenreader-only">Close message</span></a><span id="review_form-system-messages-text"></span></div>
+        <form id="review_form" class="review-form" action="index.html" role="form" aria-describedby="review_form-legend">
+          <legend id="review_form-legend">Add a new review</legend>
+          <div class="required">* All fields are required</div>
+          <div class="review_form-id">
+            <input id="restaurant-id-input" class="input" name="restaurant_id" type="number" pattern="\d*" aria-label="Restaurant ID" required aria-required="true" aria-disabled="true" disabled>
+          </div>
+          <div class="review_form-block">
+            <div class="review_form-name">
+              <input id="name-input" class="input" name="name" type="text" maxlength="16" placeholder="Name" aria-label="Please enter a name" value="" required aria-errormessage="name-message" aria-required="true">
+              <span id="name-message" class="msg-error" aria-live="off" style="visibility: hidden">Name is required. Max length: 16 chars.</span>
+            </div>
+            <div class="review_form-rating">
+              <select id="rating-select" class="select" name="rating" aria-label="Please enter your rating" required aria-errormessage="rating-message" aria-required="true">
+                <option value="" disabled="" selected="">Rating</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <span id="rating-message" class="msg-error" aria-live="off" style="visibility: hidden">Rating is required. Valid values: from 1 to 5.</span>
+            </div>
+          </div>
+          <div class="review_form-comment">
+            <textarea id="comment-textarea" name="comment" rows="5" cols="30" placeholder="Enter your comment here" aria-label="Enter your comment, please" required aria-errormessage="comment-message" aria-required="true"></textarea>
+            <span id="comment-message" class="msg-error" aria-live="off" style="visibility: hidden">Comment is required.</span>
+          </div>
+          <div class="review_form-buttons">
+            <input id="review_form-clear" type="reset" class="button--clear" value="Reset">
+            <input id="review_form-save" type="button" class="button--save" value="Save">
+          </div>
+        </form>
       </div>
       <ul id="reviews-list"></ul>
     </section>
