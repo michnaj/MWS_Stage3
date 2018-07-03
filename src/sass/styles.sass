@@ -11,6 +11,11 @@ $footerFontColor: #aaa
 $headingsColor: #b34d00
 $borderColor: #ccc
 
+=transform($property)
+  -webkit-transform: $property
+  -ms-transform: $property
+  transform: $property
+
 body, td, th, p
 	font-family: $baseFont
 	font-size: 10pt
@@ -47,7 +52,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 header
   width: 100%
   position: fixed
-  z-index: 9999
+  z-index: 1050
 #maincontent
   padding: 80px 0 0 0
   background-color: $mainBackground
@@ -436,35 +441,6 @@ header
   padding: 10px
   border: 1px solid $borderColor
 
-#review_form-system-messages
-  margin: 5px 0
-  padding: 5px 30px 5px 10px
-  position: relative
-  display: none
-  #review_msg-close-button
-    position: absolute
-    right: 5px
-    top: 2px
-    color: #999
-    font-size: 13pt
-    font-weight: bold
-    &:hover,
-    &:focus
-      color: $hoverColor2
-
-  &.error
-    color: red
-    border: 1px solid red
-  &.success
-    color: green
-    border: 1px solid green
-  &.info
-    color: #006fe6
-    border: 1px solid #006fe6
-  &.warning
-    color: #e6ac00
-    border: 1px solid #e6ac00
-
 #review_form
   visibility: hidden
   opacity: 0
@@ -478,35 +454,6 @@ header
     height: auto
   legend
     display: none
-
-  #review_form-system-messages
-    margin: 5px 0
-    padding: 5px 30px 5px 10px
-    position: relative
-    display: none
-    #review_msg-close-button
-      position: absolute
-      right: 5px
-      top: 2px
-      color: #999
-      font-size: 13pt
-      font-weight: bold
-      &:hover,
-      &:focus
-        color: $hoverColor2
-
-    &.error
-      color: red
-      border: 1px solid red
-    &.success
-      color: green
-      border: 1px solid green
-    &.info
-      color: #006fe6
-      border: 1px solid #006fe6
-    &.warning
-      color: #e6ac00
-      border: 1px solid #e6ac00
 
   .review_form-id
     position: absolute
@@ -578,6 +525,80 @@ header
     flex-direction: row
     flex-wrap: wrap
     justify-content: center
+
+/* ====================== System messages ====================== */
+#system_messages
+  box-sizing: border-box
+  background: rgba(0, 0, 0, 0.9)
+  border-radius: 10px
+  width: calc(100% - 40px)
+  min-height: 60px
+  margin: 5px 0
+  position: fixed
+  visibility: hidden
+  opacity: 0
+  top: 90px
+  left: 50%
+  +transform(translate(-50%, 0))
+  z-index: 1090
+  transition: visibility 0.5s, opacity 0.5s linear
+  will-change: visibility, opacity
+  &.open
+    visibility: visible
+    opacity: 1
+
+  #system_messages-container
+    padding: 20px 50px 20px 30px
+    position: relative
+    color: white
+    #system_msg-close-button
+      position: absolute
+      right: 10px
+      top: 10px
+      color: white
+      font-size: 26pt
+      line-height: 26pt
+      font-weight: bold
+      &:hover,
+      &:focus
+        color: $hoverColor
+    &.error,
+    &.success,
+    &.info,
+    &.warning
+      padding-left: 50px
+      .mark
+        position: absolute
+        top: 15px
+        left: 10px
+        width: 32px
+        height: 32px
+        line-height: 32px
+        font-size: 30px
+        background: white
+        border-radius: 50%
+        text-align: center
+
+    &.error
+      .mark
+        color: red
+        &:before
+          content: '!'
+    &.success
+      .mark
+        color: green
+        &:before
+          content: '✓'
+    &.info
+      .mark
+        color: #006fe6
+        &:before
+          content: 'ℹ'
+    &.warning
+      .mark
+        color: #e6ac00
+        &:before
+          content: '!'
 
 // Responsive layout
 @import responsive

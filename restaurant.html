@@ -15,6 +15,14 @@
 </head>
 
 <body class="inside">
+  <!-- System messages -->
+  <div id="system_messages" role="alert" aria-live="off">
+    <div id="system_messages-container">
+      <span id="system_messages-mark" class="mark"></span>
+      <a id="system_msg-close-button" href="#" title="Close message">🗙<span class="screenreader-only">Close message</span></a>
+      <span id="system_messages-text">Some text</span>
+    </div>
+  </div>
   <!-- Beginning header -->
   <header>
     <!-- Beginning nav -->
@@ -57,7 +65,6 @@
       <h3>Reviews</h3>
       <div id="form">
         <a id="review_form-add" href="#">Add a new review</a>
-        <div id="review_form-system-messages" role="alert" aria-live="off" class=""><a id="review_msg-close-button" href="#" title="Close message">🗙<span class="screenreader-only">Close message</span></a><span id="review_form-system-messages-text"></span></div>
         <form id="review_form" class="review-form" action="index.html" role="form" aria-describedby="review_form-legend">
           <legend id="review_form-legend">Add a new review</legend>
           <div class="required">* All fields are required</div>
