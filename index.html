@@ -45,15 +45,23 @@
       <ul id="restaurants-list"></ul>
     </section>
   </main>
-
-  <script type="application/javascript" charset="utf-8" src="js/dball.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoNSUnQLbpaumfrVHF04GtOzzvxWECMg&libraries=places&callback=initMap"></script>
-
-
   <footer id="footer">
     Copyright (c) 2017 <a href="/index.html"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
+  <!-- Scripts -->
+  <!-- Service Worker -->
+  <script>
+    // Check that service workers are registered
+    if ('serviceWorker' in navigator) {
+      // Use the window load event to keep the page load performant
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  </script>
+  <script type="application/javascript" charset="utf-8" src="js/dball.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoNSUnQLbpaumfrVHF04GtOzzvxWECMg&libraries=places&callback=initMap"></script>
 
 </body>
 

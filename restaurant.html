@@ -51,7 +51,7 @@
     <section id="restaurant-container">
       <!-- ♡ -->
       <div id="fav-icon">
-        <a id="restaurant-favorite" href="#">♥<span id="favorite-text" class="screenreader-only">Set as favorite</span></a>
+        <a id="restaurant-favorite" href="#">♥<span id="favorite-text" class="screenreader-only">Set as a favorite</span></a>
       </div>
       <h2 id="restaurant-name"></h2>
       <picture id="restaurant-img"></picture>
@@ -110,13 +110,20 @@
   </footer>
   <!-- End footer -->
 
-  <!-- Beginning scripts -->
+  <!-- Scripts -->
+  <!-- Service Worker -->
+  <script>
+    // Check that service workers are registered
+    if ('serviceWorker' in navigator) {
+      // Use the window load event to keep the page load performant
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  </script>
   <script type="application/javascript" charset="utf-8" src="js/dball.js"></script>
-  <!-- Main javascript file -->
   <script type="text/javascript" src="js/restaurant_info.js"></script>
-  <!-- Google Maps -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoNSUnQLbpaumfrVHF04GtOzzvxWECMg&libraries=places&callback=initMap"></script>
-  <!-- End scripts -->
 
 </body>
 

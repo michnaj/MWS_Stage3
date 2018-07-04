@@ -20,7 +20,6 @@ function hideSystemMessages() {
 
 // Showing system masseges handling
 function showMessage(type) {
-  console.log('Showing message');
   let textField = document.getElementById('system_messages-text');
   let container = document.getElementById('system_messages-container');
   container.classList.remove('error', 'info', 'success', 'warning');
@@ -32,6 +31,18 @@ function showMessage(type) {
     case 'saved':
       textField.innerHTML="Review saved. Thank you for your opinion.";
       container.classList.add('success');
+      break;
+    case 'favorite-true':
+      textField.innerHTML="Your request to set the restaurant as favorite has been successfully submitted.";
+      container.classList.add('success');
+      break;
+    case 'favorite-false':
+      textField.innerHTML="Your request to set the restaurant as not favorite has been successfully submitted.";
+      container.classList.add('success');
+      break;
+    case 'favorite-failed':
+      textField.innerHTML="Connection error. Your request to set the restaurant favorite status has been not submitted.";
+      container.classList.add('error');
       break;
     default:
       textField.innerHTML="Something went wrong! Try again, please.";

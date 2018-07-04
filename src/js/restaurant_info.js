@@ -20,7 +20,6 @@ function hideSystemMessages() {
 
 // Showing system masseges handling
 function showMessage(type) {
-  console.log('Showing message');
   let textField = document.getElementById('system_messages-text');
   let container = document.getElementById('system_messages-container');
   container.classList.remove('error', 'info', 'success', 'warning');
@@ -32,6 +31,18 @@ function showMessage(type) {
     case 'saved':
       textField.innerHTML="Review saved. Thank you for your opinion.";
       container.classList.add('success');
+      break;
+    case 'favorite-true':
+      textField.innerHTML="Your request to set the restaurant as favorite has been successfully submitted.";
+      container.classList.add('success');
+      break;
+    case 'favorite-false':
+      textField.innerHTML="Your request to set the restaurant as not favorite has been successfully submitted.";
+      container.classList.add('success');
+      break;
+    case 'favorite-failed':
+      textField.innerHTML="Connection error. Your request to set the restaurant favorite status has been not submitted.";
+      container.classList.add('error');
       break;
     default:
       textField.innerHTML="Something went wrong! Try again, please.";
@@ -58,6 +69,7 @@ const reviewForm = document.getElementById('review_form');
 const reviewSaveButton = document.getElementById('review_form-save');
 const reviewClearButton = document.getElementById('review_form-clear');
 const favoriteButton = document.getElementById('restaurant-favorite');
+const favoriteText = document.getElementById('favorite-text');
 
 /**
  * Initialize Google map, called from HTML.
@@ -107,6 +119,25 @@ fetchRestaurantFromURL = (callback) => {
  * Create restaurant HTML and add it to the webpage
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
+
+  // Get favorite restaurant
+  DBHelper.fetchFavoriteRestaurants((error, favoriteRestaurants) => {
+    if (error) {
+      return;
+    } else {
+      if (!favoriteRestaurants) {
+        return;
+      } else {
+        let favorite = false;
+        favoriteRestaurants.forEach( item => {
+          if (item.id == restaurant.id) favorite = true;
+        });
+        setFavoriteButton(favorite);
+        return;
+      }
+    }
+  });
+
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
 
@@ -259,11 +290,30 @@ getParameterByName = (name, url) => {
 /**
  * Favorite handling
  */
-
 favoriteButton.addEventListener('click', (event) => {
   event.preventDefault();
-  favoriteButton.classList.toggle('favorite');
+  let state;
+  (favoriteButton.getAttribute('data-favorite') === 'true') ? state = true : state = false;
+  DBHelper.putFavoriteRestaurant(getParameterByName('id'), !state)
+    .then( () => {
+      favoriteButton.setAttribute('data-favorite', !state);
+      showMessage(`favorite-${!state}`)
+    })
+    .catch( () => { showMessage('favorite-failed') });
+
 });
+
+// Set favorite button parameters
+setFavoriteButton = (state) => {
+  if (state) {
+    favoriteButton.setAttribute('data-favorite', true);
+    favoriteText.innerHTML = 'Favorite - Set as a not favorite';
+  } else {
+    favoriteButton.setAttribute('data-favorite', false);
+    favoriteText.innerHTML = 'Not favorite - Set as a favorite';
+  }
+  return;
+}
 
 /**
  * Add new Review form handling

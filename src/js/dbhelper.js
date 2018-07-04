@@ -4,18 +4,23 @@
 class DBHelper {
 
   /**
-   * Database URL.
-   * Change this to restaurants.json file location on your server.
+   * Restaurants database URL.
    */
   static get DATABASE_URL() {
     const port = 1337 // Change this to your server port
     return `http://localhost:${port}/restaurants`;
   }
 
-  /* Reviews URL */
+  /* Reviews database URL */
   static get REVIEWS_URL() {
-    const port = 1337
+    const port = 1337 // Change this to your server port
     return `http://localhost:${port}/reviews/?restaurant_id=`;
+  }
+
+  /* Favorite restaurant URL */
+  static get FAV_URL() {
+    const port = 1337 // Change this to your server port
+    return `http://localhost:${port}/restaurants/?is_favorite=true`;
   }
 
   /**
@@ -246,6 +251,25 @@ class DBHelper {
       animation: google.maps.Animation.DROP}
     );
     return marker;
+  }
+
+  /**
+   * Favourite restaurants
+   */
+  // Get reviews from network
+  static fetchFavoriteRestaurants(callback) {
+    return fetch(DBHelper.FAV_URL)
+      .then(response => response.json())
+      .then(restaurants => {
+        callback(null, restaurants)
+      }).catch(err => callback(`Request failed. Returned ${err}`, null));
+  }
+
+  // fetching favorite restaurant PUT request
+  static putFavoriteRestaurant(restaurantId, isFavorite) {
+    let url = `http://localhost:1337/restaurants/${restaurantId}/?is_favorite=${isFavorite}`;
+
+    return fetch(url, { method: 'PUT'});
   }
 
 }

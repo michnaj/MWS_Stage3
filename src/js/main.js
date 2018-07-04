@@ -20,7 +20,6 @@ function hideSystemMessages() {
 
 // Showing system masseges handling
 function showMessage(type) {
-  console.log('Showing message');
   let textField = document.getElementById('system_messages-text');
   let container = document.getElementById('system_messages-container');
   container.classList.remove('error', 'info', 'success', 'warning');
@@ -32,6 +31,18 @@ function showMessage(type) {
     case 'saved':
       textField.innerHTML="Review saved. Thank you for your opinion.";
       container.classList.add('success');
+      break;
+    case 'favorite-true':
+      textField.innerHTML="Your request to set the restaurant as favorite has been successfully submitted.";
+      container.classList.add('success');
+      break;
+    case 'favorite-false':
+      textField.innerHTML="Your request to set the restaurant as not favorite has been successfully submitted.";
+      container.classList.add('success');
+      break;
+    case 'favorite-failed':
+      textField.innerHTML="Connection error. Your request to set the restaurant favorite status has been not submitted.";
+      container.classList.add('error');
       break;
     default:
       textField.innerHTML="Something went wrong! Try again, please.";
@@ -47,6 +58,7 @@ let restaurants,
   cuisines;
 var map;
 var markers = [];
+let favoriteRestaurants = [];
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -170,6 +182,21 @@ resetRestaurants = (restaurants) => {
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
+
+  // Get favorite restaurant
+  DBHelper.fetchFavoriteRestaurants((error, restaurants) => {
+    if (error) {
+      return;
+    } else {
+      if (!restaurants) {
+        return;
+      } else {
+        favoriteRestaurants = restaurants;
+        return;
+      }
+    }
+  });
+
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
@@ -182,11 +209,12 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
 
-  // TO DO - add checking favorite state
-  const favorite = document.createElement('div');
-  favorite.className = 'favorite';
-  favorite.innerHTML = '♥';
-  li.append(favorite);
+  if (isRestaurantFavorite(restaurant.id)) {
+    const favorite = document.createElement('div');
+    favorite.className = 'favorite';
+    favorite.innerHTML = '♥';
+    li.append(favorite);
+  }
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
@@ -214,6 +242,18 @@ createRestaurantHTML = (restaurant) => {
 
   return li
 }
+/**
+ * Checking is restaurant favorite
+ */
+isRestaurantFavorite = (id) => {
+  let favorite = false;
+  if (favoriteRestaurants.length !== 0) {
+    favoriteRestaurants.forEach( restaurant => {
+      if (restaurant.id == id) favorite = true;
+    });
+  }
+  return favorite;
+}
 
 /**
  * Add markers for current restaurants to the map.
@@ -228,24 +268,3 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
-
-/**
- * Service Worker
- */
-
- /*function registerServiceWorker() {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register(`/sw.js`,  {scope: `/`}).then(function(reg) {
-        return;
-      }).catch(function(err) {
-        console.log('ServiceWorker registration failed!');
-      });
-    });
-  } else {
-    return;
-  }
-}
-
-registerServiceWorker();
-*/
