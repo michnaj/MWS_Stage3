@@ -11,6 +11,9 @@ let favoriteRestaurants = [];
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
+  var myLazyLoad = new LazyLoad({
+    elements_selector: ".lazy"
+  });
 });
 
 /**
@@ -162,9 +165,10 @@ createRestaurantHTML = (restaurant) => {
   }
 
   const image = document.createElement('img');
-  image.className = 'restaurant-img';
+  image.className = 'lazy';
   image.setAttribute('alt', DBHelper.imageAltAttribute(restaurant));
-  image.src = DBHelper.imageUrlForRestaurant(restaurant, 'sm');
+  //image.src = DBHelper.imageUrlForRestaurant(restaurant, 'sm');
+  image.setAttribute('data-src', DBHelper.imageUrlForRestaurant(restaurant, 'sm'));
   li.append(image);
 
   const name = document.createElement('h3');

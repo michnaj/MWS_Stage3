@@ -279,19 +279,20 @@ document.getElementById('review_form-add').addEventListener('click', (event) => 
 reviewSaveButton.addEventListener('click', (event) => {
   event.preventDefault();
   let review = {
-    restaurantId: document.getElementById('restaurant-id-input').value,
+    restaurant_id: parseInt(document.getElementById('restaurant-id-input').value),
     name: document.getElementById('name-input').value,
-    rating: document.getElementById('rating-select').value,
-    comment: document.getElementById('comment-textarea').value
+    rating: parseInt(document.getElementById('rating-select').value),
+    comments: document.getElementById('comment-textarea').value
   }
   let valid = validateReviewForm(review);
   if (valid) saveReview(review);
   else showMessage('invalid');
 });
 
-function saveReview(review) {
-  console.log(`Review saved: ${review}`);
-  showMessage('saved');
+saveReview = (review) => {
+  DBHelper.postReview(review)
+    .then( () => fillReviewsHTML() ) //reload reviews
+    .catch( () => console.log('Request failed!') );
   reviewForm.classList.remove('open');
   return;
 }
@@ -333,7 +334,7 @@ commentField.addEventListener('focusout', (event) => {
 
 // Fields validation
 // Text fields
-function checkValidText(value) {
+checkValidText = (value) => {
   const reg = /(<([^>]+)>)/gi;
   if ((!value) || (value.trim().length == 0) || (value.match(reg))
     || (value.match('&lt;')) || (value.match('&gt;'))
@@ -341,13 +342,13 @@ function checkValidText(value) {
   else return true;
 }
 // Rating field
-function checkValidRating(value) {
+checkValidRating = (value) => {
   if (!value) return false;
   else return true;
 }
 
 // Set fields attribute (valid, invalid) in add new form
-function setFieldsAttribute(invalid, field) {
+setFieldsAttribute = (invalid, field) => {
   switch (field) {
     case 'name':
       nameField.setAttribute('aria-invalid', invalid);
@@ -385,7 +386,7 @@ function setFieldsAttribute(invalid, field) {
   return;
 }
 
-function validateReviewForm(review) {
+validateReviewForm = (review) => {
   let validation = true;
   // reting validation
   if (!checkValidRating(review.rating)) {
@@ -404,7 +405,7 @@ function validateReviewForm(review) {
   }
 
   // comment validation
-  if (!checkValidText(review.comment)) {
+  if (!checkValidText(review.comments)) {
     setFieldsAttribute(true, 'comment');
     validation = false;
   } else {

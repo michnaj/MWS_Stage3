@@ -12,14 +12,15 @@ document.getElementById('system_msg-close-button').addEventListener('click', (ev
 });
 
 // hiding system messages
-function hideSystemMessages() {
+hideSystemMessages = () => {
   systemMsg.setAttribute('aria-live', 'off');
   systemMsg.classList.remove('open');
   document.getElementById('system_messages-text').innerHTML = '';
 }
 
 // Showing system masseges handling
-function showMessage(type) {
+showMessage = (type) => {
+  hideSystemMessages();
   let textField = document.getElementById('system_messages-text');
   let container = document.getElementById('system_messages-container');
   container.classList.remove('error', 'info', 'success', 'warning');
@@ -31,6 +32,10 @@ function showMessage(type) {
     case 'saved':
       textField.innerHTML="Review saved. Thank you for your opinion.";
       container.classList.add('success');
+      break;
+    case 'saved-queue':
+      textField.innerHTML="Network request failed, this is expected if offline.<br />Review saved locally. It will be retried when connection re-established.<br />Thank you for your opinion.";
+      container.classList.add('warning');
       break;
     case 'favorite-true':
       textField.innerHTML="Your request to set the restaurant as favorite has been successfully submitted.";
@@ -334,19 +339,20 @@ document.getElementById('review_form-add').addEventListener('click', (event) => 
 reviewSaveButton.addEventListener('click', (event) => {
   event.preventDefault();
   let review = {
-    restaurantId: document.getElementById('restaurant-id-input').value,
+    restaurant_id: parseInt(document.getElementById('restaurant-id-input').value),
     name: document.getElementById('name-input').value,
-    rating: document.getElementById('rating-select').value,
-    comment: document.getElementById('comment-textarea').value
+    rating: parseInt(document.getElementById('rating-select').value),
+    comments: document.getElementById('comment-textarea').value
   }
   let valid = validateReviewForm(review);
   if (valid) saveReview(review);
   else showMessage('invalid');
 });
 
-function saveReview(review) {
-  console.log(`Review saved: ${review}`);
-  showMessage('saved');
+saveReview = (review) => {
+  DBHelper.postReview(review)
+    .then( () => fillReviewsHTML() ) //reload reviews
+    .catch( () => console.log('Request failed!') );
   reviewForm.classList.remove('open');
   return;
 }
@@ -388,7 +394,7 @@ commentField.addEventListener('focusout', (event) => {
 
 // Fields validation
 // Text fields
-function checkValidText(value) {
+checkValidText = (value) => {
   const reg = /(<([^>]+)>)/gi;
   if ((!value) || (value.trim().length == 0) || (value.match(reg))
     || (value.match('&lt;')) || (value.match('&gt;'))
@@ -396,13 +402,13 @@ function checkValidText(value) {
   else return true;
 }
 // Rating field
-function checkValidRating(value) {
+checkValidRating = (value) => {
   if (!value) return false;
   else return true;
 }
 
 // Set fields attribute (valid, invalid) in add new form
-function setFieldsAttribute(invalid, field) {
+setFieldsAttribute = (invalid, field) => {
   switch (field) {
     case 'name':
       nameField.setAttribute('aria-invalid', invalid);
@@ -440,7 +446,7 @@ function setFieldsAttribute(invalid, field) {
   return;
 }
 
-function validateReviewForm(review) {
+validateReviewForm = (review) => {
   let validation = true;
   // reting validation
   if (!checkValidRating(review.rating)) {
@@ -459,7 +465,7 @@ function validateReviewForm(review) {
   }
 
   // comment validation
-  if (!checkValidText(review.comment)) {
+  if (!checkValidText(review.comments)) {
     setFieldsAttribute(true, 'comment');
     validation = false;
   } else {

@@ -17,6 +17,12 @@ class DBHelper {
     return `http://localhost:${port}/reviews/?restaurant_id=`;
   }
 
+  /* POST reviews URL */
+  static get POSTREVIEWS_URL() {
+    const port = 1337
+    return `http://localhost:${port}/reviews/`;
+  }
+
   /* Favorite restaurant URL */
   static get FAV_URL() {
     const port = 1337 // Change this to your server port
@@ -272,6 +278,26 @@ class DBHelper {
     return fetch(url, { method: 'PUT'});
   }
 
+  /**
+   * Reviews
+   */
+  static postReview(review) {
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const data = JSON.stringify(review);
+    return fetch(DBHelper.POSTREVIEWS_URL, {
+      method: 'POST',
+      headers: headers,
+      body: data
+    })
+    .then( () => {
+      showMessage('saved');
+      return Promise.resolve()
+    })
+    .catch( () => {
+      showMessage('saved-queue');
+      return Promise.resolve()
+    });
+  }
 }
 
 /**

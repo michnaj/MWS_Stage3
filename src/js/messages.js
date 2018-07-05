@@ -12,14 +12,15 @@ document.getElementById('system_msg-close-button').addEventListener('click', (ev
 });
 
 // hiding system messages
-function hideSystemMessages() {
+hideSystemMessages = () => {
   systemMsg.setAttribute('aria-live', 'off');
   systemMsg.classList.remove('open');
   document.getElementById('system_messages-text').innerHTML = '';
 }
 
 // Showing system masseges handling
-function showMessage(type) {
+showMessage = (type) => {
+  hideSystemMessages();
   let textField = document.getElementById('system_messages-text');
   let container = document.getElementById('system_messages-container');
   container.classList.remove('error', 'info', 'success', 'warning');
@@ -31,6 +32,10 @@ function showMessage(type) {
     case 'saved':
       textField.innerHTML="Review saved. Thank you for your opinion.";
       container.classList.add('success');
+      break;
+    case 'saved-queue':
+      textField.innerHTML="Network request failed, this is expected if offline.<br />Review saved locally. It will be retried when connection re-established.<br />Thank you for your opinion.";
+      container.classList.add('warning');
       break;
     case 'favorite-true':
       textField.innerHTML="Your request to set the restaurant as favorite has been successfully submitted.";

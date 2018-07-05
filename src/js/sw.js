@@ -61,8 +61,20 @@ if (workbox) {
   );
 
   /**
-   * TO DO: Background Sync
+   * Background Sync
    */
+
+  const bgSyncPlugin = new workbox.backgroundSync.Plugin('restrev-reviews-queue', {
+    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours
+  });
+
+  workbox.routing.registerRoute(
+    new RegExp('http://localhost:1337/reviews/'),
+    workbox.strategies.networkOnly({
+      plugins: [bgSyncPlugin]
+    }),
+    'POST'
+  );
 
 } else {
   console.log(`Workbox didn't load.`);
