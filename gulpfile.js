@@ -12,7 +12,7 @@ const reload = browserSync.reload;
 
 gulp.task('default', defaultTask);
 gulp.task('sass', () => {
-  return gulp.src('./src/sass/**/styles.sass')
+  return gulp.src(['./src/sass/**/styles-restaurants.sass', './src/sass/**/styles-main.sass', './src/sass/**/responsive.sass'])
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
     .pipe(sourcemaps.write('./'))
@@ -22,18 +22,6 @@ gulp.task('sass', () => {
 gulp.task('scripts', () => {
   return gulp.src(['./src/js/idb.js', './src/js/dbhelper.js'])
     .pipe(concat('dball.js'))
-    .pipe(gulp.dest('./src/js/'));
-});
-
-gulp.task('scripts-main', () => {
-  return gulp.src(['./src/js/messages.js','./src/js/main-src.js'])
-    .pipe(concat('main.js'))
-    .pipe(gulp.dest('./src/js/'));
-});
-
-gulp.task('scripts-restinfo', () => {
-  return gulp.src(['./src/js/messages.js', './src/js/restaurant_info-src.js'])
-    .pipe(concat('restaurant_info.js'))
     .pipe(gulp.dest('./src/js/'));
 });
 
@@ -66,7 +54,8 @@ gulp.task('icocompress', () =>
     .pipe(gulp.dest('./ico'))
 );
 
-gulp.task('dist', gulp.series('sass', 'scripts', 'scripts-main', 'scripts-restinfo', 'compress', 'swcompress', 'imgcompress', 'icocompress'));
+gulp.task('dist', gulp.series('sass', 'scripts', 'compress', 'swcompress', 'imgcompress', 'icocompress'));
+gulp.task('dist-code', gulp.series('sass', 'scripts', 'compress', 'swcompress'));
 
 function defaultTask() {
   browserSync.init({
@@ -74,9 +63,8 @@ function defaultTask() {
     server: './'
   });
   gulp.watch('src/js/**/dbhelper.js', gulp.series('scripts', 'compress')).on('change', reload);
-  gulp.watch('src/js/**/main-src.js', gulp.series('scripts-main', 'compress')).on('change', reload);
-  gulp.watch('src/js/**/restaurant_info-src.js', gulp.series('scripts-restinfo', 'compress')).on('change', reload);
-  gulp.watch('src/js/**/messages.js', gulp.series('scripts-main', 'scripts-restinfo', 'compress')).on('change', reload);
+  gulp.watch('src/js/**/main.js', gulp.series('scripts', 'compress')).on('change', reload);
+  gulp.watch('src/js/**/restaurant_info.js', gulp.series('scripts', 'compress')).on('change', reload);
   gulp.watch('src/js/**/sw.js', gulp.series('swcompress')).on('change', reload);
   gulp.watch('src/sass/**/*.sass', gulp.series('sass')).on('change', reload);
   gulp.watch('*.html').on('change', reload);

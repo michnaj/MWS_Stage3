@@ -546,6 +546,7 @@ class DBHelper {
     let image = `${restaurant.photograph}.jpg`;
     if (size === 'sm') suffix = '_300px';
     else if (size === 'md') suffix = '_500px';
+    else if (size === 'lazy') suffix = '_lazy';
     let newImage = image.replace('.', suffix + '.');
     return ('img/' + newImage);
   }

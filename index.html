@@ -5,23 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
   <meta name="theme-color" content="#fdfdfd">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles-main.css">
+  <link rel="stylesheet" href="css/progressive-image.min.css">
+  <link rel="stylesheet" href="css/responsive.css" media="(min-width: 576px)">
   <link rel="icon" type="image/png" sizes="192x192" href="./ico/restaurant_192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="./ico/restaurant_512.png">
   <title>Restaurant Reviews</title>
 </head>
 
 <body>
-  <!-- System messages -->
-  <div id="system_messages" role="alert" aria-live="off" class="">
-    <div id="system_messages-container">
-      <span id="system_messages-mark" class="mark"></span>
-      <a id="system_msg-close-button" href="#" title="Close message">🗙<span class="screenreader-only">Close message</span></a>
-      <span id="system_messages-text">Some text</span>
-    </div>
-  </div>
   <header>
     <nav id="heading-nav">
       <h1><a href="/index.html"><span class="symbol">♨</span> Restaurant Reviews</a></h1>
@@ -30,6 +24,7 @@
 
   <main id="maincontent">
     <section id="map-container">
+      <a id="map-toggle" href="#">Show map</a>
       <div id="map" role="application" aria-label="Google Maps" aria-hidden="true" tabindex="-1"></div>
     </section>
     <section>
@@ -60,9 +55,9 @@
     }
   </script>
   <script type="application/javascript" charset="utf-8" src="js/dball.js"></script>
-  <script src="js/main.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/progressive-image.min.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoNSUnQLbpaumfrVHF04GtOzzvxWECMg&libraries=places&callback=initMap"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/8.9.0/lazyload.min.js"></script>
 
 </body>
 

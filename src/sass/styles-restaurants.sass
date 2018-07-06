@@ -1,0 +1,397 @@
+@charset "utf-8"
+
+@import styles
+
+$baseFont: Arial, Helvetica, sans-serif
+$baseFontColor: #333
+$secondaryFontColor: #fff
+$backgroundColor: #fdfdfd
+$mainBackground: #f3f3f3
+$hoverColor: orange
+$hoverColor2: #3397DB
+$footerFontColor: #aaa
+$headingsColor: #b34d00
+$borderColor: #ccc
+
+=transform($property)
+  -webkit-transform: $property
+  -ms-transform: $property
+  transform: $property
+
+/* ====================== Breadcrumb ====================== */
+.breadcrumb-nav
+  width: 100%
+#breadcrumb
+  padding: 10px 40px
+  list-style: none
+  background-color: #eee
+  font-size: 17px
+  line-height: 30px
+  margin: 0
+  width: 100%
+  height: 50px
+  box-sizing: border-box
+  overflow: hidden
+  border-bottom: 1px solid #ddd
+
+  /* Display list items side by side */
+  li
+    display: inline
+
+    /* Add a color to all links inside the list */
+    a
+      color: #025fb1
+      text-decoration: none
+
+      /* Add a color on mouse-over */
+      &:hover
+        color: #01447e
+        text-decoration: underline
+
+      /* Styles for current page breadcrumb */
+      &[aria-current='page']
+        color: #333
+
+  /* Add a slash symbol (/) before/behind each list item */
+  li+li:before
+    padding: 8px
+    color: black
+    content: "/\00a0"
+
+/* ====================== Restaurant Details ====================== */
+.inside
+  header
+    position: fixed
+    top: 0
+    width: 100%
+    z-index: 1000
+  #map-container
+    background: blue none repeat scroll 0 0
+    height: 450px
+    width: 100%
+    position: relative
+    top: 50px
+  #map
+    background-color: #ccc
+    height: 100%
+    width: 100%
+  #footer
+    bottom: 0
+    position: absolute
+    width: 100%
+
+#restaurant-name
+  color: #f18200
+  font-family: $baseFont
+  font-size: 20pt
+  font-weight: 200
+  letter-spacing: 0
+  margin: 15px 0 30px
+  text-transform: uppercase
+  line-height: 1.1
+
+#restaurant-img
+  width: 100%
+
+  img
+    max-width: 100%
+    min-width: 100%
+    height: auto
+    border-radius: 5px 30px
+
+#restaurant-address
+  font-size: 12pt
+  margin: 10px 0px
+#restaurant-cuisine
+  background-color: $baseFontColor
+  color: #ddd
+  font-size: 12pt
+  font-weight: 300
+  letter-spacing: 10px
+  margin: 0 0 20px
+  padding: 5px 0
+  text-align: center
+  text-transform: uppercase
+  width: 100%
+  border-radius: 5px
+#restaurant-container, #reviews-container
+  border-bottom: 1px solid #d9d9d9
+  border-top: 1px solid #fff
+  padding: 40px 40px 80px
+  width: 100%
+  box-sizing: border-box
+#restaurant-container
+  max-width: 880px
+  margin: 30px auto 0
+  position: relative
+
+  h2
+    color: $headingsColor
+    border-bottom: 3px solid $headingsColor
+    font-size: 28pt
+    width: 100%
+    padding-right: 50px
+    box-sizing: border-box
+
+#fav-icon
+  font-size: 36pt
+  width: 36pt
+  height: 36pt
+  line-height: 36pt
+  border-radius: 50%
+  text-align: center
+  background: white
+  box-shadow: 2px 2px 5px $baseFontColor
+  position: absolute
+  top: 45px
+  right: 40px
+  a#restaurant-favorite
+    color: lighten($baseFontColor, 30%)
+    &[data-favorite=true]
+      color: $hoverColor2
+    &:hover
+      color: $hoverColor
+
+#reviews-container
+  padding: 30px 40px 80px
+
+  h3
+    color: $headingsColor
+    font-size: 24pt
+    font-weight: 300
+    letter-spacing: -1px
+    padding-bottom: 1pt
+
+#reviews-list
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+  margin: 0 auto
+  padding: 0
+
+  li
+    background-color: $secondaryFontColor
+    display: flex
+    flex-wrap: wrap
+    list-style-type: none
+    margin: 0 0 30px
+    padding: 0
+    width: 85%
+    border-radius: 5px 30px
+    box-shadow: 5px 5px 10px #888
+
+    p
+      margin: 0 0 10px
+      padding: 10px 20px
+      box-sizing: border-box
+
+    .name,
+    .date
+      width: 50%
+      background-color: #333
+      line-height: 20pt
+    .name
+      border-radius: 5px 0 0 0
+      font-size: 18pt
+      color: $secondaryFontColor
+    .date
+      border-radius: 0 30px 0 0
+      font-size: 11pt
+      color: #ccc
+      text-align: right
+    .rating
+      font-size: 12pt
+      font-weight: 700
+      margin: 10px 20px
+      padding: 5px 10px
+      background-color: #bb5200
+      color: $secondaryFontColor
+      border-radius: 5px
+      text-transform: uppercase
+      letter-spacing: 2px
+    .comment
+      padding: 10px 20px 20px
+      width: 100%
+
+#restaurant-hours
+  border-collapse: collapse
+  width: 100%
+  box-shadow: 2px 2px 5px #888
+
+  tr
+    &:nth-child(even)
+      background: #fff
+    &:nth-child(odd)
+      background: #ffc14d
+    &:focus
+      outline: 3px solid red
+      background: #fcc
+  td
+    padding: 6px 10px
+    color: #555
+
+/* ====================== Reviews form ====================== */
+#form
+  margin: 10px 10px 30px 10px
+  padding: 10px
+  border: 1px solid $borderColor
+
+#review_form
+  visibility: hidden
+  opacity: 0
+  height: 0
+  will-change: visibility, opacity
+  transition: visibility 0s, opacity 0.5s linear
+  &.open
+    margin-top: 10px
+    visibility: visible
+    opacity: 1
+    height: auto
+  legend
+    display: none
+
+  .review_form-id
+    position: absolute
+    left: -9999px
+
+  .required
+    color: red
+
+  input, select, textarea
+    box-sizing: border-box
+    width: 100%
+    background: $backgroundColor
+    border: 1px solid $borderColor
+    color: $baseFontColor
+    height: 33px
+    padding: 0 20px
+    font-size: 11pt
+    &[aria-invalid=false]
+      border-color: green
+    &[aria-invalid=true]
+      border-color: red
+  textarea
+    padding: 10px 20px
+    height: 80px
+  input
+    &[disabled]
+      background: $borderColor
+  .msg-error
+    color: red
+
+  [class^=review_form-]
+    display: block
+    padding: 5px 0
+
+  [class^=button--]
+    width: 150px
+    font-size: 11pt
+    border-radius: 10px
+    letter-spacing: 2px
+    color: white
+    margin: 5px
+    font-weight: bold
+    box-shadow: 2px 2px 8px $baseFontColor
+    transition: 0.2s
+    &:focus
+      outline: 0
+      box-shadow: 0 0 3px 3px red
+  .button--clear
+    background: #007bff
+    border: 1px solid #0063cc
+    &:hover
+      background: #004a99
+  .button--save
+    background: #28a745
+    border: 1px solid #23903c
+    &:hover
+      background: #19672a
+  .review_form-block
+    display: flex
+    flex-direction: row
+    flex-wrap: wrap
+    justify-content: space-between
+    align-items: stretch
+
+    .review_form-name, .review_form-rating
+      width: 100%
+  .review_form-buttons
+    display: flex
+    flex-direction: row
+    flex-wrap: wrap
+    justify-content: center
+
+/* ====================== System messages ====================== */
+#system_messages
+  box-sizing: border-box
+  background: rgba(0, 0, 0, 0.9)
+  border-radius: 10px
+  width: calc(100% - 40px)
+  max-width: 800px
+  min-height: 60px
+  margin: 5px 0
+  position: fixed
+  visibility: hidden
+  opacity: 0
+  top: 90px
+  left: 50%
+  +transform(translate(-50%, 0))
+  z-index: 1090
+  transition: visibility 0.5s, opacity 0.5s linear
+  will-change: visibility, opacity
+  &.open
+    visibility: visible
+    opacity: 1
+
+  #system_messages-container
+    padding: 20px 50px 20px 30px
+    position: relative
+    color: white
+    #system_msg-close-button
+      position: absolute
+      right: 10px
+      top: 10px
+      color: white
+      font-size: 26pt
+      line-height: 26pt
+      font-weight: bold
+      &:hover,
+      &:focus
+        color: $hoverColor
+    &.error,
+    &.success,
+    &.info,
+    &.warning
+      padding-left: 50px
+      .mark
+        position: absolute
+        top: 15px
+        left: 10px
+        width: 32px
+        height: 32px
+        line-height: 32px
+        font-size: 30px
+        background: white
+        border-radius: 50%
+        text-align: center
+
+    &.error
+      .mark
+        color: red
+        &:before
+          content: '!'
+    &.success
+      .mark
+        color: green
+        &:before
+          content: '✓'
+    &.info
+      .mark
+        color: #006fe6
+        &:before
+          content: 'ℹ'
+    &.warning
+      .mark
+        color: #e6ac00
+        &:before
+          content: '!'

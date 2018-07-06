@@ -1,0 +1,147 @@
+@charset "utf-8"
+
+@import styles
+
+$baseFont: Arial, Helvetica, sans-serif
+$baseFontColor: #333
+$secondaryFontColor: #fff
+$backgroundColor: #fdfdfd
+$mainBackground: #f3f3f3
+$hoverColor: orange
+$hoverColor2: #3397DB
+$footerFontColor: #aaa
+$headingsColor: #b34d00
+$borderColor: #ccc
+
+=transform($property)
+  -webkit-transform: $property
+  -ms-transform: $property
+  transform: $property
+
+/* ====================== Map ====================== */
+#map-container
+  #map-toggle
+    z-index: 1050
+    text-align: center
+    padding: 3px 10px
+    text-transform: uppercase
+    font-size: 12pt
+    width: 120px
+    top: 0
+    right: 20px
+    position: absolute
+    background: darken($hoverColor, 10%)
+    color: white
+    border-radius: 0 0 5px 5px
+    transition: 0.3s
+    &:hover,
+    &:focus
+      background: lighten($hoverColor, 0%)
+      color: $baseFontColor
+
+/* ====================== Restaurant Filtering ====================== */
+.filter-options
+  width: 100%
+  padding: 10px 0
+  min-height: 60px
+  background-color: #175782
+  align-items: center
+
+  h2
+    color: white
+    font-size: 1rem
+    font-weight: normal
+    line-height: 1
+    margin: 0 20px
+  select
+    background-color: #fff
+    border: 1px solid #fff
+    font-family: $baseFont
+    font-size: 11pt
+    height: 35px
+    letter-spacing: 0
+    margin: 10px
+    padding: 0 10px
+    width: 250px
+
+/* ====================== Restaurant Listing ====================== */
+#restaurants-list
+  background-color: $mainBackground
+  list-style: outside none none
+  margin: 0
+  padding: 30px 15px 60px
+  text-align: center
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+  align-items: stretch
+
+  li
+    background-color: #fff
+    font-family: Arial,sans-serif
+    margin: 30px
+    min-height: 380px
+    padding: 0 0 25px
+    text-align: left
+    width: 300px
+    border-radius: 5px 30px
+    box-shadow: 5px 5px 10px #888
+    position: relative
+
+    .favorite
+      width: 30pt
+      height: 30pt
+      border-radius: 50%
+      background: white
+      color: $hoverColor2
+      text-align: center
+      position: absolute
+      top: 5px
+      left: 5px
+      font-size: 30pt
+      line-height: 30pt
+      box-shadow: 2px 2px 5px $baseFontColor
+      z-index: 1050
+
+    h3
+      background-color: #175782
+      color: $secondaryFontColor
+      font-family: Arial,sans-serif
+      font-size: 14pt
+      font-weight: 200
+      letter-spacing: 0
+      line-height: 1.3
+      margin: 0
+      padding: 10px
+      text-transform: uppercase
+    a
+      background-color: #bb5200
+      color: $secondaryFontColor
+      display: block
+      font-size: 12pt
+      margin: 15px auto
+      padding: 8px 30px 10px
+      width: 50%
+      text-align: center
+      text-decoration: none
+      text-transform: uppercase
+      border-radius: 5px
+      transition: 0.3s
+
+      &:hover,
+      &:focus
+        background-color: #175782
+    .progressive
+      margin: 0
+      border-radius: 5px 30px 0 0
+      overflow: hidden
+  p
+    margin: 0
+    padding: 10px
+    font-size: 11pt
+
+  .neighborhood
+    background-color: #0b2c41
+    color: #fff
+    padding: 5px 10px
+    margin-bottom: 10px
