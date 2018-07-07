@@ -13,3 +13,8 @@
 ### Note about ES6
 
 Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code.
+
+### What I used
+
+1. [Workbox](https://developers.google.com/web/tools/workbox/) JavaScript Libraries for adding offline support to web apps
+2. Craig Buckler's [progressive-image.js](https://github.com/craigbuckler/progressive-image.js) - a Lazy loading progressive image
